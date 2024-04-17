@@ -22,20 +22,33 @@ function buildMetadata(sample) {
 function buildCharts(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
-    // Get the samples field
-
-
     // Filter the samples for the object with the desired sample number
-
+    var sampleData = data.samples.filter(obj => obj.id == sample)[0];
 
     // Get the otu_ids, otu_labels, and sample_values
-
+    var otu_ids = sampleData.otu_ids;
+    var otu_labels = sampleData.otu_labels;
+    var sample_values = sampleData.sample_values;
 
     // Build a Bubble Chart
-
-
-    // Render the Bubble Chart
-
+    var bubbleLayout = {
+      title: 'Bacteria Cultures Per Sample',
+      xaxis: {tile: 'OTU ID'},
+      hovermode: 'closest',
+      showlegend: false
+    };
+    var bubbleData = [{
+      x: otu_ids,
+      y: sample_values,
+      text: otu_labels,
+      mode: 'markers',
+      marker: {
+        size: sample_values,
+        color: otu_ids,
+        colorscale: 'Earth'
+      }
+    }];
+    Plotly.newPlot('buble', bubbleData, bubbleLayout);
 
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
 
