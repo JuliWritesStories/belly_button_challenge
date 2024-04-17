@@ -85,3 +85,68 @@ function updateDemographicInfo(metadata){
     panel.append('p').text(`${key}: ${value}`);
   });
 }
+// Function to create dropdown menu
+function createDropdown(samples){
+  // Select the dropdown element
+  const dropdown = d3.select('#selDataset');
+
+  // Clear any previous options (optional, depending on your use case)
+  dropdown.html('');
+
+  // Iterate over each sample in the array
+  samples.forEach(sample => {
+    // Append an option element to the dropdown with the sample as both value and text
+    dropdown.append('option').attr('value', sample).text(sample);
+  });
+}
+
+// Initialize the dashboard
+async function init(){
+  // Fetch data asynchronously
+  const data = await fetchData('https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json');
+
+  // Check if data is successfully fetched
+  if (!data){
+    console.error('Failed to fetch data');
+    return;
+  }
+
+  // Create dropdown menu using sample names
+  createDropdown(data.names);
+
+  // Assuming data.samples[0] corresponds to the first sample
+  createBarChart(data.samples[0]);
+  createBubbleChart(data.samples[0]);
+
+  // Assuming data.metadata[0] corresponds to the metadata for the first sample
+  updateDemographicInfo(data.metadata[0]);
+}
+
+// Update the charts based on the selected option
+async function optionChanged(id) {
+  // Fetch data from the provided URL asynchronously
+  const data = await fetchData('https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json');
+  
+  // If data is not available, return early
+  if (!data){
+    return;
+  }
+
+  // Find the sample corresponding to the selected ID
+  const sample = data.samples.find(sample => sample.id === id);
+  
+  // Find the metadata corresponding to the selected ID
+  const metadata = data.metadata.find(metadata => metadata.id.toString() === id);
+
+  // Create bar chart using the selected sample data
+  createBarChart(sample);
+
+  // Create bubble chart using the selected sample data
+  createBubbleChart(sample);
+  
+  // Update demographic information using the selected metadata
+  updateDemographicInfo(metadata);
+}
+
+// Initialize the dashboard
+init();
