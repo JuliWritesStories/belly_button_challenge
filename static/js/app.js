@@ -72,3 +72,16 @@ function createBubbleChart(sample) {
   Plotly.newPlot('bubble', [trace], layout);
 }
 
+// Demographic info update function
+function updateDemographicInfo(metadata){
+  // Select the HTML element with the id 'sample-metadata'
+  const panel = d3.select('#sample-metadata');
+  // Clear any existing content within the selected element
+  panel.html('');
+
+  // Iterate over each key-value pair in the metadata object
+  Object.entries(metadata).forEach(([key, value]) => {
+    // Append a paragraph element to the panel element with the key-value pair as text
+    panel.append('p').text(`${key}: ${value}`);
+  });
+}
