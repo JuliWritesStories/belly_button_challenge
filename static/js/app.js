@@ -46,3 +46,29 @@ function createBarChart(sample) {
   // Create a new Plotly bar chart with the specified trace and layout
   Plotly.newPlot('bar', [trace], layout);
 }
+
+// Function to create bubble chart
+function createBubbleChart(sample) {
+  // Define trace object for the bubble chart
+  const trace = {
+    x: sample.otu_ids, // Set x-axis values to OTU IDs
+    y: sample.sample_values, // Set y-axis values to sample values
+    text: sample.otu_labels, // Set hover text to OTU labels
+    mode: 'markers', // Set mode to markers for bubble chart
+    marker: {
+      size: sample.sample_values, // Set marker size based on sample values
+      color: sample.otu_ids // Set marker color based on OTU IDs
+    }
+  };
+
+  // Define layout object for the bubble chart
+  const layout = {
+    title: 'Bacteria Cultures Per Sample', // Set chart title
+    xaxis: { title: 'OTU ID' }, // Set x-axis title
+    yaxis: { title: 'Sample Values' } // Set y-axis title
+  };
+
+  // Create a new Plotly bubble chart with the specified trace and layout
+  Plotly.newPlot('bubble', [trace], layout);
+}
+
